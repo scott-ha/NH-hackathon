@@ -1,9 +1,23 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const db_test = require('./db/sql_querys');
+const request = require('request');
+const req_module = require('./req_nh');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+// users
+router.get('/', async function(req, res, next) {
+
+    let db_result = await db_test.is_users();
+    await res.status(200).send(db_result);
+
+});
+
+// GET FINACCOUNT
+// /users/FA
+router.get('/FA', async function(req, res, next) {
+
+    let result = await request.post(req_module.get_FINAccount());
+    await res.status(200).send(result);
 });
 
 module.exports = router;
