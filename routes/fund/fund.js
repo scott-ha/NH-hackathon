@@ -38,8 +38,7 @@ router.post('/', async function(req, res, next) {
         "template": {
           "outputs": [{
             "simpleImage": {
-              "imageUrl": "https://sg-attend-hnnwp.run.goorm.io/img/out.png",
-              "altText": "보물상자입니다"
+              "imageUrl": "https://sg-attend-hnnwp.run.goorm.io/img/out.png"
             }
           }]
         }
