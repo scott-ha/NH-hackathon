@@ -5,7 +5,7 @@ const request = require('request');
 const req_module = require('./req_nh');
 const moment = require('moment');
 
-var date,hour;
+var date, hour;
 
 // users
 router.get('/', async function(req, res, next) {
@@ -23,15 +23,16 @@ router.get('/FA', function(req, res, next) {
     date: moment().format("YYYYMMDD"),
     hour: moment().format("HHmmss")
   }
-  let result = request.post(req_module.get_FINAccount(req_Header), function(error, response, body) {
-    if (error) {
-      console.error(error);
-    } else {
-      // data = JSON.parse(body);
-      console.log(body);
-      res.status(200).send(body);
-    }
-  });
+  let result = request.post(req_module.CheckOpenFinAccountDirect(req_Header),
+    function(error, response, body) {
+      if (error) {
+        console.error(error);
+      } else {
+        // data = JSON.parse(body);
+        console.log(body);
+        res.status(200).send(body);
+      }
+    });
 });
 
 module.exports = router;
