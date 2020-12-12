@@ -4,12 +4,14 @@ const router = express.Router();
 const request = require('request');
 const req_module = require('../req_nh');
 const moment = require('moment');
+const fs = require('fs');
+const text2png = require('text2png');
 
 var date, hour, kakao_res;
 
 // GET FINACCOUNT
 // /users/FA
-router.get('/', async function(req, res, next) {
+router.post('/', async function(req, res, next) {
 
   let req_Header = {
     date: moment().format("YYYYMMDD"),
@@ -23,18 +25,28 @@ router.get('/', async function(req, res, next) {
       console.log(body.Ldbl);
       console.log(typeof(body));
 
+      fs.writeFileSync('public/img/out.png', text2png('잔액\n' + body.Ldbl + "원", {
+        font: '80px Futura',
+        color: 'teal',
+        backgroundColor: 'linen',
+        lineSpacing: 10,
+        padding: 20
+      }))
+
       kakao_res = {
         "version": "2.0",
         "template": {
           "outputs": [{
-            "simpleText": {
-              "text": "요청하신 잔액은 " + body.Ldbl + "입니다."
+            "simpleImage": {
+              "imageUrl": "img/out.png",
+              "altText": "보물상자입니다"
             }
           }]
         }
       }
       res.status(200).send(kakao_res);
     }
+
   });
 });
 
