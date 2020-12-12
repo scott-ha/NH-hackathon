@@ -25,13 +25,13 @@ router.post('/', async function(req, res, next) {
       console.log(body.Ldbl);
       console.log(typeof(body));
 
-      fs.writeFileSync('public/img/out.png', text2png('잔액\n' + body.Ldbl + "원", {
-        font: '80px Futura',
-        color: 'teal',
-        backgroundColor: 'linen',
-        lineSpacing: 10,
-        padding: 20
-      }))
+      // fs.writeFileSync('public/img/out.png', text2png('잔액\n' + body.Ldbl + "원", {
+      //   font: '80px Futura',
+      //   color: 'teal',
+      //   backgroundColor: 'linen',
+      //   lineSpacing: 10,
+      //   padding: 20
+      // }))
 
       kakao_res = {
         "version": "2.0",
