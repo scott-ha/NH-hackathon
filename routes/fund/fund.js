@@ -38,7 +38,7 @@ router.post('/', async function(req, res, next) {
         "template": {
           "outputs": [{
             "simpleImage": {
-              "imageUrl": "https://sg-attend-hnnwp.run.goorm.io/img/out.png"
+              "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/out.png"
             }
           }]
         }
