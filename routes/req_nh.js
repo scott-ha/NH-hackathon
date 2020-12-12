@@ -27,7 +27,7 @@ module.exports.CheckOpenFinAccountDirect = function(req_Header) {
   return req_set
 }
 
-module.exports.InquireBalance = function(req_Header) {
+module.exports.InquireBalance = function(req_Header, req_users) {
   req_set = {
     uri: nh_url + '/InquireBalance.nh',
     headers: {
