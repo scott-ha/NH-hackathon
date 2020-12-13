@@ -3,7 +3,9 @@ const router = express.Router();
 // const db_test = require('./db/sql_querys');
 const request = require('request');
 const req_module = require('../req_nh');
-const moment = require('moment');
+var moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
 const fs = require('fs');
 
 var date, hour, kakao_res;
@@ -66,10 +68,12 @@ router.post('/week_history', async function(req, res, next) {
     return new Promise(function(resolve, reject) {
       console.log("kakaores in")
       var fincardNo = "00829101234560000112345678919";
+      console.log('date-----');
+      console.log(moment().format("YYYYMMDD"));
+
       let req_Header = {
         date: moment().format("YYYYMMDD"),
-        hour: moment().format("HHmmss"),
-        fincardNo: fincardNo
+        hour: moment().format("HHmmss")
       };
       request.post(req_module.InquireCreditCardAuthorizationHistory(req_Header), function(error, response, body) {
         if (error) {
@@ -77,6 +81,7 @@ router.post('/week_history', async function(req, res, next) {
         } else {
           // console.log("week request in")
           // console.log(response)
+          console.log(body);
           // // data = JSON.parse(body);
           console.log("조회 총 건수", body.Iqtcnt);
           // console.log("거래내역목록", body.REC);

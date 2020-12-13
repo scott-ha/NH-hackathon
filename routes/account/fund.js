@@ -3,7 +3,9 @@ const router = express.Router();
 const db_test = require('../db/sql_querys');
 const request = require('request');
 const req_module = require('../req_nh');
-const moment = require('moment');
+var moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
 const fs = require('fs');
 const text2png = require('text2png');
 
