@@ -115,12 +115,12 @@ module.exports.InquireCreditCardAuthorizationHistory = function(req_Header) {
     },
     body: {
       "Header": {
-        "ApiNm": "CheckOpenFinCardDirect",
+        "ApiNm": "InquireCreditCardAuthorizationHistory",
         "Tsymd": req_Header.date,
         "Trtm": req_Header.hour,
         "Iscd": "000524",
         "FintechApsno": "001",
-        "ApiSvcCd": "DrawingTransferA",
+        "ApiSvcCd": "CardInfo",
         "IsTuno": req_Header.date + req_Header.hour + "35555", // user_id 20자리
         "AccessToken": "e33d042424e78f837d716eeda26933d030f2e9a0b965d543ceaca7597ed2cbba"
       },
