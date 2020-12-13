@@ -19,5 +19,18 @@
     "request": "^2.88.2",
     "supervisor": "^0.12.0",
     "text2png": "^2.3.0"
-  }
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scott-ha/NH-hackathon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scott-ha/NH-hackathon/issues"
+  },
+  "homepage": "https://github.com/scott-ha/NH-hackathon#readme",
+  "description": ""
 }
