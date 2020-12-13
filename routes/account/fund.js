@@ -66,10 +66,10 @@ router.post('/getAccounts', async function(req, res, next) {
   }
   // b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396
 
-  req_users = {
-    kakao_key: req.body.userRequest.user.id
-  }
-  console.log(req_users);
+  // req_users = {
+  //   kakao_key: req.body.userRequest.user.id
+  // }
+  // console.log(req_users);
 
   kakao_res = {
     "version": "2.0",
