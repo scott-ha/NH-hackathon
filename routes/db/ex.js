@@ -1,0 +1,15 @@
+{
+   CardAthzNo: '40927800',
+   Trdd: '20191105',
+   Txtm: '154038',
+   Usam: '100',
+   AfstNoBrno: '2936400278',
+   AfstNo: '146862942',
+   AfstNm: '박찬늘',
+   AmslKnd: '1',
+   Tris: '00',
+   Ccyn: '0',
+   CnclYmd: '',
+   Crcd: '',
+   AcplUsam: ''
+ },
