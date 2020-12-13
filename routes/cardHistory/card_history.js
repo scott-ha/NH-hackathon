@@ -7,10 +7,56 @@ const moment = require('moment');
 const fs = require('fs');
 
 var date, hour, kakao_res;
+var kakao_res;
 
-// GET FINACCOUNT
-// /users/FA
 router.post('/', async function(req, res, next) {
+  function kakaores() {
+    return new Promise(function(resolve, reject) {
+
+      kskso_res = response = {
+        "version": "2.0",
+        "template": {
+          "outputs": [{
+            "simpleText": {
+              "text": "카드거래내역 조회를 선택하셨습니다.",
+              "buttons": [{
+
+                  "action": "block",
+                  "label": "1주일 거래내역",
+                  "blockId": "5fd59318b6158466bd573c77"
+                },
+                {
+
+                  "action": "block",
+                  "label": "1개월 거래내역",
+                  "blockId": "5fd59321896ca73e8efa7f96"
+                },
+                {
+
+                  "action": "block",
+                  "label": "기간 직접 선택",
+                  "blockId": "5fd5932d896ca73e8efa7f98"
+                }
+
+
+              ]
+
+            }
+          }]
+
+        }
+      };
+      resolve(res.status(200).send(kakao_res));
+
+      // initialize
+      kakao_res = '';
+    });
+  }
+});
+
+
+
+router.post('/history', async function(req, res, next) {
   req.body
   let req_Header = {
     date: moment().format("YYYYMMDD"),
@@ -35,8 +81,7 @@ router.post('/', async function(req, res, next) {
       kakao_res = {
         "version": "2.0",
         "template": {
-          "outputs": [
-          ]
+          "outputs": []
         }
       }
       res.status(200).send(kakao_res);
