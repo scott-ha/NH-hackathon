@@ -69,6 +69,7 @@ router.post('/getAccounts', async function(req, res, next) {
   req_users = {
     kakao_key: req.body.userRequest.user.id
   }
+  console.log(req_users);
 
   kakao_res = {
     "version": "2.0",
@@ -80,7 +81,7 @@ router.post('/getAccounts', async function(req, res, next) {
         }]
     }
   }
-  
+
   res.status(200).send(kakao_res);
 });
 
