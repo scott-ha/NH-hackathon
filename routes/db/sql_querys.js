@@ -9,7 +9,7 @@ var pool = mysql.createPool(dbConfig);
 exports.is_users = function is_users() {
   return new Promise(function(resolve, reject) {
     let sql =
-    "SELECT * FROM tb_users";
+      "SELECT * FROM tb_users";
     pool.getConnection(function(err, connection) {
       if (!err) {
         connection.query(sql,
@@ -25,6 +25,30 @@ exports.is_users = function is_users() {
       // pool release
       connection.release();
     });
+  });
+}
+
+exports.get_accounts = function get_accounts() {
+  return new Promise(function(resolve, reject) {
+    let sql = "SELECT a.* from tb_accounts as a" +
+      "inner join tb_users as b on b.user_no = a.user_no" +
+      "where b.kakao_key = 'b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396'"
+
+      pool.getConnection(function(err, connection) {
+        if (!err) {
+          connection.query(sql,
+            (err, rows) => {
+              if (err) {
+                reject(err);
+              }
+              console.log('db access..');
+              console.log(rows);
+              resolve(rows); // query results
+            })
+        }
+        // pool release
+        connection.release();
+      });
   });
 }
 
