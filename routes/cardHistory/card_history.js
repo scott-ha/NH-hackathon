@@ -97,7 +97,7 @@ router.post('/week_history', async function(req, res, next) {
           for (var i = 0; i < body.Iqtcnt / 5; i++) {
             kakao_data = {
               "header": {
-                "title": body.Iqtcnt + " 건의 거래내역" + " ( " + ((i*5)+1) + " ~ " + ((i*5)+5) + " )"
+                "title": body.Iqtcnt + " 건의 거래내역" + " ( " + ((i * 5) + 1) + " ~ " + ((i * 5) + 5) + " )"
               }
             }
 
@@ -107,13 +107,15 @@ router.post('/week_history', async function(req, res, next) {
             listitem += ',"items":['
 
             for (var j = (i * 5) + 0; j < (i * 5) + 5; j++) {
-
-              kakao_data = {
-                "title": body.REC[j].Usam + "원 " + body.REC[j].AfstNm,
-                "description": moment(body.REC[j].Trdd).format("YYYY-MM-DD") + " " + body.REC[j].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
-                "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/access.png"
+              if (j < body.Iqtcnt) {
+                kakao_data = {
+                  "title": body.REC[j].Usam + "원 " + body.REC[j].AfstNm,
+                  "description": moment(body.REC[j].Trdd).format("YYYY-MM-DD") + " " + body.REC[j].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
+                  "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/access.png"
+                }
+                listitem += JSON.stringify(kakao_data) + ",";
               }
-              listitem += JSON.stringify(kakao_data) + ",";
+
 
             }
             listitem = listitem.slice(0, -1);
@@ -149,11 +151,10 @@ router.post('/week_history', async function(req, res, next) {
                 }
               ],
               "quickReplies": [{
-                  "action": "block",
-                  "label": "🏠 처음으로",
-                  "blockId": "5fd4847ae2dafb7751e31240"
-                }
-              ]
+                "action": "block",
+                "label": "🏠 처음으로",
+                "blockId": "5fd4847ae2dafb7751e31240"
+              }]
             }
           }
           res.status(200).send(kakao_res);

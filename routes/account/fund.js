@@ -123,6 +123,8 @@ router.post('/history', async function(req, res, next) {
       var fincardNo = "00829101234560000112345678919";
       console.log('date-----');
       console.log(moment().format("YYYYMMDD"));
+      console.log(jsonData[0].price);
+      console.log(jsonData.length);
 
       let req_Header = {
         date: moment().format("YYYYMMDD"),
@@ -142,13 +144,22 @@ router.post('/history', async function(req, res, next) {
         listitem += ',"items":['
 
         for (var j = (i * 5) + 0; j < (i * 5) + 5; j++) {
-
-          kakao_data = {
-            "title": jsonData[j].price + "원 " + jsonData[j].description,
-            "description": jsonData[j].date + " " + jsonData[j].time,
-            "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/out.png"
+          if (j < jsonData.length) {
+            var imgurl;
+            if (jsonData[j].type == "지출") {
+              imgurl = "https://nh-hackacthon-hjpcq.run.goorm.io/img/out.png"
+            } else {
+              imgurl = "https://nh-hackacthon-hjpcq.run.goorm.io/img/in.png"
+            }
+            kakao_data = {
+              "title": jsonData[j].price + "원 " + jsonData[j].description,
+              "description": jsonData[j].date + " " + jsonData[j].time,
+              "imageUrl": imgurl
+            }
+            listitem += JSON.stringify(kakao_data) + ",";
+            console.log(j);
           }
-          listitem += JSON.stringify(kakao_data) + ",";
+
 
         }
         listitem = listitem.slice(0, -1);
@@ -174,7 +185,7 @@ router.post('/history', async function(req, res, next) {
         "template": {
           "outputs": [{
               "simpleText": {
-                "text": "50건의 카드내역이 검색되었습니다."
+                "text": jsonData.length + "건의 카드내역이 검색되었습니다."
               }
             },
             {
@@ -185,6 +196,10 @@ router.post('/history', async function(req, res, next) {
             }
           ],
           "quickReplies": [{
+            "action": "block",
+            "label": "↪️ 뒤로가기",
+            "blockId": "5fd4de34d0b2c65565610452"
+          }, {
             "action": "block",
             "label": "🏠 처음으로",
             "blockId": "5fd4847ae2dafb7751e31240"
