@@ -17,7 +17,7 @@ router.post('/', async function(req, res, next) {
     date: moment().format("YYYYMMDD"),
     hour: moment().format("HHmmss")
   }
-  request.post(req_module.get_Account_balance(req_Header), function(error, response, body) {
+  request.post(req_module.CheckOpenFinAccountDirect(req_Header), function(error, response, body) {
     if (error) {
       console.error(error);
     } else {
@@ -55,10 +55,22 @@ router.post('/', async function(req, res, next) {
 // /fund/getAccounts
 
 router.post('/getAccounts', async function(req, res, next) {
-  kakao_key = req.body.userRequest.user.id;
+  // kakao_key = req.body.userRequest.user.id;
   db_result = await db_test.get_accounts();
 
-  console.log(db_result);
+  console.log(db_result[0].bankName);
+
+//   [
+//   RowDataPacket {
+//     bankName: '농협은행',
+//     Bncd: '011',
+//     Acno: '16065600',
+//     balance: '',
+//     accountType: '모계좌',
+//     user_no: '1',
+//     FinAcno: '00820100005530000000000005173'
+//   }
+// ]
 
   req_Header = {
     date: moment().format("YYYYMMDD"),
@@ -72,15 +84,31 @@ router.post('/getAccounts', async function(req, res, next) {
   // console.log(req_users);
 
   kakao_res = {
-    "version": "2.0",
-    "template": {
-      "outputs": [{
-            "simpleText": {
-                "text": "간단한 텍스트 요소입니다."
+  "version": "2.0",
+  "template": {
+    "outputs": [
+      {
+        "basicCard": {
+          "title": "보물상자",
+          "description": "보물상자 안에는 뭐가 있을까",
+          "thumbnail": {
+            "imageUrl": "http://k.kakaocdn.net/dn/83BvP/bl20duRC1Q1/lj3JUcmrzC53YIjNDkqbWK/i_6piz1p.jpg"
+          },
+          "buttons": [
+            {
+              "action": "block",
+              "blockId": "5fd5b2bff1af467fe1fcba90",
+              "label": db_result[0].bankName,
+              "extra": {
+                "FinAcno" : db_result[0].FinAcno
+              }
             }
-        }]
-    }
+          ]
+        }
+      }
+    ]
   }
+}
 
   res.status(200).send(kakao_res);
 });

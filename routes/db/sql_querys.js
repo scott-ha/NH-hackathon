@@ -30,9 +30,9 @@ exports.is_users = function is_users() {
 
 exports.get_accounts = function get_accounts() {
   return new Promise(function(resolve, reject) {
-    let sql = "SELECT a.* from tb_accounts as a" +
-      "inner join tb_users as b on b.user_no = a.user_no" +
-      "where b.kakao_key = 'b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396'"
+    let sql = "SELECT a.* from tb_accounts as a " +
+      "inner join tb_users as b on a.user_no = b.user_no " +
+      "where b.kakao_key='b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396'"
 
       pool.getConnection(function(err, connection) {
         if (!err) {
@@ -42,7 +42,6 @@ exports.get_accounts = function get_accounts() {
                 reject(err);
               }
               console.log('db access..');
-              console.log(rows);
               resolve(rows); // query results
             })
         }
