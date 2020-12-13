@@ -10,10 +10,11 @@ var date, hour, kakao_res;
 var kakao_res;
 
 router.post('/', async function(req, res, next) {
+    console.log("card_history in")
   function kakaores() {
     return new Promise(function(resolve, reject) {
 
-      kakao_res = response = {
+      kakao_res = {
         "version": "2.0",
         "template": {
           "outputs": [{
