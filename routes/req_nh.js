@@ -51,3 +51,57 @@ module.exports.InquireBalance = function(req_Header) {
   }
   return req_set
 }
+
+module.exports.requestOpenFinCardDirect = function(req_Header) {
+  req_set = {
+    uri: nh_url + '/OpenFinCardDirect.nh',
+    headers: {
+      "accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: {
+        "Header": {
+          "ApiNm": "CheckOpenFinCardDirect",
+          "Tsymd": req_Header.date,
+          "Trtm": req_Header.hour,
+          "Iscd": "000524",
+          "FintechApsno": "001",
+          "ApiSvcCd": "DrawingTransferA",
+          "IsTuno": req_Header.date + req_Header.hour + "33333", // user_id 20자리
+          "AccessToken": "55bacf8f744b2e6ff6f01bb2acc0b25a50cf91475dea7c7950e11e02c8a169d4"
+        },
+        "Cano": "9411123456782718", //윤재 카드 번호, 하늘형 카드번호로 수정해야하?
+        "BrdtBrno": "19920927"
+      },
+      json: true
+  }
+  return req_set
+}
+
+
+
+module.exports.CheckOpenFinCardDirect = function(req_Header) {
+  req_set = {
+    uri: nh_url + '/CheckOpenFinCardDirect.nh',
+    headers: {
+      "accept": "application/json",
+      "Content-Type": "application/json",
+    },
+    body: {
+        "Header": {
+          "ApiNm": "CheckOpenFinCardDirect",
+          "Tsymd": req_Header.date,
+          "Trtm": req_Header.hour,
+          "Iscd": "000524",
+          "FintechApsno": "001",
+          "ApiSvcCd": "DrawingTransferA",
+          "IsTuno": req_Header.date + req_Header.hour + "33334", // user_id 20자리
+          "AccessToken": "55bacf8f744b2e6ff6f01bb2acc0b25a50cf91475dea7c7950e11e02c8a169d4"
+        },
+        "Rgno": "20201212000001052", //수정해야 하늘형꺼 등록번호로?
+        "BrdtBrno": "19920927"
+      },
+      json: true
+  }
+  return req_set
+}
