@@ -97,7 +97,7 @@ router.post('/week_history', async function(req, res, next) {
           for (var i = 0; i < body.Iqtcnt / 5; i++) {
             kakao_data = {
               "header": {
-                "title": body.Iqtcnt + " 건의 거래내역"
+                "title": body.Iqtcnt + " 건의 거래내역" + " ( " + ((i*5)+1) + " ~ " + ((i*5)+5) + " )"
               }
             }
 
@@ -111,7 +111,7 @@ router.post('/week_history', async function(req, res, next) {
               kakao_data = {
                 "title": body.REC[j].Usam + "원 " + body.REC[j].AfstNm,
                 "description": moment(body.REC[j].Trdd).format("YYYY-MM-DD") + " " + body.REC[j].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
-                "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/카드승인.png"
+                "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/access.png"
               }
               listitem += JSON.stringify(kakao_data) + ",";
 

@@ -118,11 +118,11 @@ module.exports.InquireCreditCardAuthorizationHistory = function(req_Header) {
         "ApiNm": "InquireCreditCardAuthorizationHistory",
         "Tsymd": req_Header.date,
         "Trtm": req_Header.hour,
-        "Iscd": "000524",
+        "Iscd": "000553",
         "FintechApsno": "001",
         "ApiSvcCd": "CardInfo",
         "IsTuno": req_Header.date + req_Header.hour + "35555", // user_id 20자리
-        "AccessToken": "e33d042424e78f837d716eeda26933d030f2e9a0b965d543ceaca7597ed2cbba"
+        "AccessToken": "55bacf8f744b2e6ff6f01bb2acc0b25a50cf91475dea7c7950e11e02c8a169d4"
       },
       "FinCard": "00829101234560000112345678919",
       "IousDsnc": "1",
@@ -135,3 +135,7 @@ module.exports.InquireCreditCardAuthorizationHistory = function(req_Header) {
   }
   return req_set
 }
+
+// 000524
+// e33d042424e78f837d716eeda26933d030f2e9a0b965d543ceaca7597ed2cbba
+// 00829101234560000112345678919

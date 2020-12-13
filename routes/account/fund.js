@@ -8,9 +8,9 @@ require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 const fs = require('fs');
 const text2png = require('text2png');
+const jsonData = require('./history');
 
 var date, hour, kakao_res, req_Header, req_users, kakao_key, db_result;
-
 
 // 순서
 // 카카오키로 계좌 정보 받아오고 받아온 계좌정보로 잔액 조회 **
@@ -19,9 +19,9 @@ var date, hour, kakao_res, req_Header, req_users, kakao_key, db_result;
 
 router.post('/getAccounts', async function(req, res, next) {
   // kakao_key = req.body.userRequest.user.id;
-  db_result = await db_test.get_accounts();
+  // db_result = await db_test.get_accounts();
 
-  console.log(db_result[0].bankName);
+  // console.log(db_result[0].bankName);
 
   //   [
   //   RowDataPacket {
@@ -107,6 +107,96 @@ router.post('/', async function(req, res, next) {
     }
 
   });
+});
+
+// 거래내역
+// /fund/history
+router.post('/history', async function(req, res, next) {
+
+  // await fs.readFile('./history.json', 'utf8', (err, jsonFile) => {
+  //   jsonData = JSON.parse(jsonFile)
+  // })
+
+  function kakaores() {
+    return new Promise(function(resolve, reject) {
+      console.log("kakaores in")
+      var fincardNo = "00829101234560000112345678919";
+      console.log('date-----');
+      console.log(moment().format("YYYYMMDD"));
+
+      let req_Header = {
+        date: moment().format("YYYYMMDD"),
+        hour: moment().format("HHmmss")
+      };
+      var listitem, kakao_data;
+      for (var i = 0; i < jsonData.length / 5; i++) {
+        kakao_data = {
+          "header": {
+            "title": jsonData.length + " 건의 거래내역" + " ( " + ((i * 5) + 1) + " ~ " + ((i * 5) + 5) + " )"
+          }
+        }
+
+
+        listitem += JSON.stringify(kakao_data);
+        listitem = listitem.slice(0, -1);
+        listitem += ',"items":['
+
+        for (var j = (i * 5) + 0; j < (i * 5) + 5; j++) {
+
+          kakao_data = {
+            "title": jsonData[j].price + "원 " + jsonData[j].description,
+            "description": jsonData[j].date + " " + jsonData[j].time,
+            "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/out.png"
+          }
+          listitem += JSON.stringify(kakao_data) + ",";
+
+        }
+        listitem = listitem.slice(0, -1);
+        listitem += "]},";
+      }
+
+      var bug_index = listitem.search('undefined');
+      if (bug_index == 0) {
+        listitem = listitem.slice(9, listitem.length - 1);
+      } else if (bug_index == -1) {
+        listitem = listitem.slice(0, listitem.length - 1);
+      }
+
+      listitem = "[" + listitem + "]";
+      listitem = JSON.parse(listitem);
+
+      console.log("listitem------");
+      console.log(listitem);
+      console.log("listitem------");
+
+      kakao_res = {
+        "version": "2.0",
+        "template": {
+          "outputs": [{
+              "simpleText": {
+                "text": "50건의 카드내역이 검색되었습니다."
+              }
+            },
+            {
+              "carousel": {
+                "type": "listCard",
+                "items": listitem
+              }
+            }
+          ],
+          "quickReplies": [{
+            "action": "block",
+            "label": "🏠 처음으로",
+            "blockId": "5fd4847ae2dafb7751e31240"
+          }]
+        }
+      }
+      res.status(200).send(kakao_res);
+      kakao_res = {};
+    });
+  }
+  await kakaores();
+  kakao_data, kakao_res, listitem = '';
 });
 
 module.exports = router;
