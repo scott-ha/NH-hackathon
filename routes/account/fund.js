@@ -9,6 +9,64 @@ const text2png = require('text2png');
 
 var date, hour, kakao_res, req_Header, req_users, kakao_key, db_result;
 
+
+// 순서
+// 카카오키로 계좌 정보 받아오고 받아온 계좌정보로 잔액 조회 **
+
+// /fund/getAccounts
+
+router.post('/getAccounts', async function(req, res, next) {
+  // kakao_key = req.body.userRequest.user.id;
+  db_result = await db_test.get_accounts();
+
+  console.log(db_result[0].bankName);
+
+  //   [
+  //   RowDataPacket {
+  //     bankName: '농협은행',
+  //     Bncd: '011',
+  //     Acno: '16065600',
+  //     balance: '',
+  //     accountType: '모계좌',
+  //     user_no: '1',
+  //     FinAcno: '00820100005530000000000005173'
+  //   }
+  // ]
+
+  req_Header = {
+    date: moment().format("YYYYMMDD"),
+    hour: moment().format("HHmmss")
+  }
+  // b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396
+
+  // req_users = {
+  //   kakao_key: req.body.userRequest.user.id
+  // }
+  // console.log(req_users);
+
+  kakao_res = {
+    "version": "2.0",
+    "template": {
+      "outputs": [{
+        "basicCard": {
+          "thumbnail": {
+            "imageUrl": "http://k.kakaocdn.net/dn/83BvP/bl20duRC1Q1/lj3JUcmrzC53YIjNDkqbWK/i_6piz1p.jpg"
+          },
+          "buttons": [{
+            "action": "block",
+            "blockId": "5fd5b2bff1af467fe1fcba90",
+            "label": db_result[0].bankName,
+            "extra": {
+              "FinAcno": db_result[0].FinAcno
+            }
+          }]
+        }
+      }]
+    }
+  }
+  await res.status(200).send(kakao_res);
+});
+
 // GET FINACCOUNT
 // /fund
 router.post('/', async function(req, res, next) {
@@ -47,70 +105,6 @@ router.post('/', async function(req, res, next) {
     }
 
   });
-});
-
-// 순서
-// 카카오키로 계좌 정보 받아오고 받아온 계좌정보로 잔액 조회 **
-
-// /fund/getAccounts
-
-router.post('/getAccounts', async function(req, res, next) {
-  // kakao_key = req.body.userRequest.user.id;
-  db_result = await db_test.get_accounts();
-
-  console.log(db_result[0].bankName);
-
-//   [
-//   RowDataPacket {
-//     bankName: '농협은행',
-//     Bncd: '011',
-//     Acno: '16065600',
-//     balance: '',
-//     accountType: '모계좌',
-//     user_no: '1',
-//     FinAcno: '00820100005530000000000005173'
-//   }
-// ]
-
-  req_Header = {
-    date: moment().format("YYYYMMDD"),
-    hour: moment().format("HHmmss")
-  }
-  // b5737d511008458fba80a7fb12544a5352ec281fa691fb7800a2a3d2f0b6821396
-
-  // req_users = {
-  //   kakao_key: req.body.userRequest.user.id
-  // }
-  // console.log(req_users);
-
-  kakao_res = {
-  "version": "2.0",
-  "template": {
-    "outputs": [
-      {
-        "basicCard": {
-          "title": "보물상자",
-          "description": "보물상자 안에는 뭐가 있을까",
-          "thumbnail": {
-            "imageUrl": "http://k.kakaocdn.net/dn/83BvP/bl20duRC1Q1/lj3JUcmrzC53YIjNDkqbWK/i_6piz1p.jpg"
-          },
-          "buttons": [
-            {
-              "action": "block",
-              "blockId": "5fd5b2bff1af467fe1fcba90",
-              "label": db_result[0].bankName,
-              "extra": {
-                "FinAcno" : db_result[0].FinAcno
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
-
-  res.status(200).send(kakao_res);
 });
 
 module.exports = router;
