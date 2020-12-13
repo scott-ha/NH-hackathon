@@ -49,7 +49,7 @@ router.post('/', function(req, res, next) {
         {
           "action": "block",
           "label": "기간 직접 선택",
-          "blockId": "5fd5932d896ca73e8efa7f98"
+          "blockId": "5fd4c3f4a56e832b03f722be"
         }
       ]
 
@@ -81,41 +81,43 @@ router.post('/week_history', async function(req, res, next) {
         } else {
           // console.log("week request in")
           // console.log(response)
-          console.log(body);
+          // console.log(body);
           // // data = JSON.parse(body);
-          console.log("조회 총 건수", body.Iqtcnt);
+          // console.log("조회 총 건수", body.Iqtcnt);
           // console.log("거래내역목록", body.REC);
           // for (var i = 0; i < body.REC.length; i++) {
           //   array[i]
           // }
-          console.log(body.REC);
 
           console.log(typeof(body));
           var carousel_head = JSON.stringify();
 
           var listitem, kakao_data;
-
-          for (var i = 0; i < body.REC.length / 5; i++) {
+          body.REC.reverse();
+          for (var i = 0; i < body.Iqtcnt / 5; i++) {
             kakao_data = {
               "header": {
-                "title": body.REC.length + " 건의 거래내역"
+                "title": body.Iqtcnt + " 건의 거래내역"
               }
             }
 
-            listitem += JSON.stringify(kakao_data) + ',"items":[';
+
+            listitem += JSON.stringify(kakao_data);
+            listitem = listitem.slice(0, -1);
+            listitem += ',"items":['
 
             for (var j = (i * 5) + 0; j < (i * 5) + 5; j++) {
 
               kakao_data = {
-                "title": "(출) " + body.REC[j].Usam + "원 " + body.REC[j].AfstNm,
-                "description": moment(body.REC[19].Trdd).format("YYYY-MM-DD") + " " + body.REC[j].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
-                "imageUrl": "http://k.kakaocdn.net/dn/APR96/btqqH7zLanY/kD5mIPX7TdD2NAxgP29cC0/1x1.jpg"
+                "title": body.REC[j].Usam + "원 " + body.REC[j].AfstNm,
+                "description": moment(body.REC[j].Trdd).format("YYYY-MM-DD") + " " + body.REC[j].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
+                "imageUrl": "https://nh-hackacthon-hjpcq.run.goorm.io/img/카드승인.png"
               }
               listitem += JSON.stringify(kakao_data) + ",";
 
             }
-            listitem.slice(0,-1);
-            listitem += ",";
+            listitem = listitem.slice(0, -1);
+            listitem += "]},";
           }
 
           var bug_index = listitem.search('undefined');
@@ -125,52 +127,33 @@ router.post('/week_history', async function(req, res, next) {
             listitem = listitem.slice(0, listitem.length - 1);
           }
 
-          listitem = listitem
+          listitem = "[" + listitem + "]";
           listitem = JSON.parse(listitem);
 
           console.log("listitem------");
           console.log(listitem);
           console.log("listitem------");
-
           kakao_res = {
             "version": "2.0",
             "template": {
               "outputs": [{
-                "carousel": {
-                  "type": "listCard",
-                  "items": [
-
-                    {
-                      "header": {
-                        "title": body.REC.length + " 건의 거래내역"
-                      },
-                      "items": [{
-                          "title": "(출) " + body.REC[0].Usam + "원 " + body.REC[0].AfstNm,
-                          "description": moment(body.REC[19].Trdd).format("YYYY-MM-DD") + " " + body.REC[0].Txtm.substring(0, 2) + ":" + body.REC[0].Txtm.substring(2, 4),
-                          "imageUrl": "http://k.kakaocdn.net/dn/APR96/btqqH7zLanY/kD5mIPX7TdD2NAxgP29cC0/1x1.jpg"
-                        },
-                        {
-                          "title": "Kakao i Open Builder",
-                          "description": "카카오톡 채널 챗봇 만들기",
-                          "imageUrl": "http://k.kakaocdn.net/dn/N4Epz/btqqHCfF5II/a3kMRckYml1NLPEo7nqTmK/1x1.jpg",
-                          "link": {
-                            "web": "https://namu.wiki/w/%EB%AC%B4%EC%A7%80(%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%94%84%EB%A0%8C%EC%A6%88)"
-                          }
-                        },
-                        {
-                          "title": "Kakao i Voice Service",
-                          "description": "보이스봇 / KVS 제휴 신청하기",
-                          "imageUrl": "http://k.kakaocdn.net/dn/bE8AKO/btqqFHI6vDQ/mWZGNbLIOlTv3oVF1gzXKK/1x1.jpg",
-                          "link": {
-                            "web": "https://namu.wiki/w/%EC%96%B4%ED%94%BC%EC%B9%98"
-                          }
-                        }
-                      ]
-                    }
-
-                  ]
+                  "simpleText": {
+                    "text": body.Iqtcnt + "건의 카드내역이 검색되었습니다."
+                  }
+                },
+                {
+                  "carousel": {
+                    "type": "listCard",
+                    "items": listitem
+                  }
                 }
-              }]
+              ],
+              "quickReplies": [{
+                  "action": "block",
+                  "label": "🏠 처음으로",
+                  "blockId": "5fd4847ae2dafb7751e31240"
+                }
+              ]
             }
           }
           res.status(200).send(kakao_res);
