@@ -70,28 +70,18 @@ router.post('/getAccounts', async function(req, res, next) {
     kakao_key: req.body.userRequest.user.id
   }
 
-  await request.post(req_module.InquireBalance(req_Header), function(error, response, body) {
-    if (error) {
-      console.error(error);
-    } else {
-      // data = JSON.parse(body);
-      console.log(body.Ldbl);
-      console.log(typeof(body));
-
-      kakao_res = {
-        "version": "2.0",
-        "template": {
-          "outputs": [{
-                "simpleText": {
-                    "text": "간단한 텍스트 요소입니다."
-                }
-            }]
-        }
-      }
-      res.status(200).send(kakao_res);
+  kakao_res = {
+    "version": "2.0",
+    "template": {
+      "outputs": [{
+            "simpleText": {
+                "text": "간단한 텍스트 요소입니다."
+            }
+        }]
     }
-
-  });
+  }
+  
+  res.status(200).send(kakao_res);
 });
 
 module.exports = router;
