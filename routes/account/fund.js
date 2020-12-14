@@ -290,7 +290,7 @@ router.post('/history', async function(req, res, next) {
         "template": {
           "outputs": [{
               "simpleText": {
-                "text": jsonData.length + "건의 카드내역이 검색되었습니다."
+                "text": jsonData.length + "건의 거래내역이 검색되었습니다."
               }
             },
             {
@@ -302,7 +302,7 @@ router.post('/history', async function(req, res, next) {
           ],
           "quickReplies": [{
             "action": "block",
-            "label": "🏠 뒤로가기",
+            "label": "↪️ 뒤로가기",
             "blockId": "5fd4847ae2dafb7751e31240"
           }, {
             "action": "block",
