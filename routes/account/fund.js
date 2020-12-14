@@ -109,6 +109,111 @@ router.post('/', async function(req, res, next) {
   });
 });
 
+// 입+출금 선택
+// /fund/innout
+router.post('/innout', async function(req, res, next) {
+
+  // await fs.readFile('./history.json', 'utf8', (err, jsonFile) => {
+  //   jsonData = JSON.parse(jsonFile)
+  // })
+
+  function kakaores() {
+    return new Promise(function(resolve, reject) {
+      console.log("kakaores in")
+      var fincardNo = "00829101234560000112345678919";
+      console.log('date-----');
+      console.log(moment().format("YYYYMMDD"));
+      console.log(jsonData[0].price);
+      console.log(jsonData.length);
+
+      let req_Header = {
+        date: moment().format("YYYYMMDD"),
+        hour: moment().format("HHmmss")
+      };
+      var listitem, kakao_data;
+      for (var i = 0; i < jsonData.length / 5; i++) {
+        kakao_data = {
+          "header": {
+            "title": jsonData.length + " 건의 거래내역" + " ( " + ((i * 5) + 1) + " ~ " + ((i * 5) + 5) + " )"
+          }
+        }
+
+
+        listitem += JSON.stringify(kakao_data);
+        listitem = listitem.slice(0, -1);
+        listitem += ',"items":['
+
+        for (var j = (i * 5) + 0; j < (i * 5) + 5; j++) {
+          if (j < jsonData.length) {
+            var imgurl;
+            if (jsonData[j].type == "지출") {
+              imgurl = "https://nh-hackacthon-hjpcq.run.goorm.io/img/out.png"
+            } else {
+              imgurl = "https://nh-hackacthon-hjpcq.run.goorm.io/img/in.png"
+            }
+            kakao_data = {
+              "title": jsonData[j].price + "원 " + jsonData[j].description,
+              "description": jsonData[j].date + " " + jsonData[j].time,
+              "imageUrl": imgurl
+            }
+            listitem += JSON.stringify(kakao_data) + ",";
+            console.log(j);
+          }
+
+
+        }
+        listitem = listitem.slice(0, -1);
+        listitem += "]},";
+      }
+
+      var bug_index = listitem.search('undefined');
+      if (bug_index == 0) {
+        listitem = listitem.slice(9, listitem.length - 1);
+      } else if (bug_index == -1) {
+        listitem = listitem.slice(0, listitem.length - 1);
+      }
+
+      listitem = "[" + listitem + "]";
+      listitem = JSON.parse(listitem);
+
+      console.log("listitem------");
+      console.log(listitem);
+      console.log("listitem------");
+
+      kakao_res = {
+        "version": "2.0",
+        "template": {
+          "outputs": [{
+              "simpleText": {
+                "text": jsonData.length + "건의 카드내역이 검색되었습니다."
+              }
+            },
+            {
+              "carousel": {
+                "type": "listCard",
+                "items": listitem
+              }
+            }
+          ],
+          "quickReplies": [{
+            "action": "block",
+            "label": "🏠 뒤로가기",
+            "blockId": "5fd4847ae2dafb7751e31240"
+          }, {
+            "action": "block",
+            "label": "🏠 처음으로",
+            "blockId": "5fd4847ae2dafb7751e31240"
+          }]
+        }
+      }
+      res.status(200).send(kakao_res);
+      kakao_res = {};
+    });
+  }
+  await kakaores();
+  kakao_data, kakao_res, listitem = '';
+});
+
 // 거래내역
 // /fund/history
 router.post('/history', async function(req, res, next) {
@@ -197,8 +302,8 @@ router.post('/history', async function(req, res, next) {
           ],
           "quickReplies": [{
             "action": "block",
-            "label": "↪️ 뒤로가기",
-            "blockId": "5fd4de34d0b2c65565610452"
+            "label": "🏠 뒤로가기",
+            "blockId": "5fd4847ae2dafb7751e31240"
           }, {
             "action": "block",
             "label": "🏠 처음으로",
