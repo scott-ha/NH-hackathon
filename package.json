@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "supervisor ./bin/www",
+    "forever": "forever start -w --minUptime=1000 --spinSleepTime=1000 ./bin/www"
   },
   "dependencies": {
     "canvas": "^2.6.1",
@@ -11,6 +12,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "forever": "^3.0.4",
     "http-errors": "~1.6.3",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
